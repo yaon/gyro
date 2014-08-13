@@ -1,0 +1,60 @@
+#! /bin/sh
+
+show_help()
+{
+  cat << EOF
+usage:
+        -h, --help Show this help and exit
+        -d         Configure the project in debug mode, will configure in
+                   Release mode by default
+EOF
+  exit $1
+}
+
+parse_arg()
+{
+  debug=false
+
+  for arg in $@; do
+    if [ "$arg" = "-d" ]; then
+      debug=true
+    elif [ "$arg" = "-h" ] || [ "$arg" = "--help" ]; then
+      show_help 0
+    else
+      echo Configure: unrecognized option $arg
+      show_help 1
+    fi
+  done
+
+  if [ $debug = false ]; then
+    echo Configure: Launching in Release Mode
+    cmake .. -DCMAKE_BUILD_TYPE=Release
+  else
+    echo Configure: Launching in Debug Mode
+    cmake .. -DCMAKE_BUILD_TYPE=Debug
+  fi
+  return $?
+}
+
+[ -d build ] || mkdir build
+cd build && parse_arg $@ && cat << EOF > ../Makefile
+all:
+	make -C build
+
+clean:
+	make -C build clean
+
+deploy:
+	make -C build deploy
+
+run:
+	make -C build run
+
+distclean:
+	rm -rf build Makefile
+
+install:
+	make -C build install
+#EOF
+EOF
+
