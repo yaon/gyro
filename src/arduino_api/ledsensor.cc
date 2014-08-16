@@ -1,6 +1,11 @@
-#include <iostream>
-#include <thread>
-#include "main.hh"
+/*
+ * ledsensor.c
+ * Source code for lab on IoT Intel Galileo
+ * Author : Nicolas Vailliet <nicolas.vailliet@intel.com> 2014
+ * License: Creative Commons 3.0
+ */ 
+
+#include "ledsensor.h"
 #include "Wire.h"
 
 #define MMA8452_ADDRESS 0x1D  // 0x1D if SA0 is high, 0x1C if low
@@ -11,8 +16,7 @@
 #define WHO_AM_I   0x0D
 #define CTRL_REG1  0x2A
 
-// Sets full-scale range to +/-2, 4, or 8g. Used to calc real g values.
-#define GSCALE 2
+#define GSCALE 2 // Sets full-scale range to +/-2, 4, or 8g. Used to calc real g values.
 
 void setup()
 {
@@ -34,8 +38,7 @@ void loop()
     float accelG[3];  // Stores the real accel value in g's
     for (int i = 0 ; i < 3 ; i++)
     {
-      // get actual g value, this depends on scale being set
-      accelG[i] = (float) accelCount[i] / ((1<<12)/(2*GSCALE));
+      accelG[i] = (float) accelCount[i] / ((1<<12)/(2*GSCALE));  // get actual g value, this depends on scale being set
     }
 
     // Print out values
@@ -53,19 +56,15 @@ void readAccelData(int *destination)
 {
   byte rawData[6];  // x/y/z accel register data stored here
 
-  // Read the six raw data registers into data array
-  readRegisters(OUT_X_MSB, 6, rawData);
+  readRegisters(OUT_X_MSB, 6, rawData);  // Read the six raw data registers into data array
 
   // Loop to calculate 12-bit ADC and g value for each axis
   for(int i = 0; i < 3 ; i++)
   {
-    //Combine the two 8 bit registers into one 12-bit number
-    int gCount = (rawData[i*2] << 8) | rawData[(i*2)+1];
-    //The registers are left align, here we right align the 12-bit integer
-    gCount >>= 4;
+    int gCount = (rawData[i*2] << 8) | rawData[(i*2)+1];  //Combine the two 8 bit registers into one 12-bit number
+    gCount >>= 4; //The registers are left align, here we right align the 12-bit integer
 
-    // If the number is negative, we have to make it so manually
-    // (no 12-bit data type)
+    // If the number is negative, we have to make it so manually (no 12-bit data type)
     if (rawData[i*2] > 0x7F)
     {
       gCount = ~gCount + 1;
@@ -76,7 +75,7 @@ void readAccelData(int *destination)
   }
 }
 
-// Initialize the MMA8452 registers
+// Initialize the MMA8452 registers 
 // See the many application notes for more info on setting all of these registers:
 // http://www.freescale.com/webapp/sps/site/prod_summary.jsp?code=MMA8452Q
 void initMMA8452()
@@ -88,6 +87,7 @@ void initMMA8452()
   }
   else
   {
+    // FIXME IN HEXA
     printf("Could not connect to MMA8452Q: 0x%d\n", c);
     while(1) ; // Loop forever if communication doesn't happen
   }
@@ -119,22 +119,19 @@ void MMA8452Active()
   writeRegister(CTRL_REG1, c | 0x01); //Set the active bit to begin detection
 }
 
-// Read bytesToRead sequentially,
-// starting at addressToRead into the dest byte array
+// Read bytesToRead sequentially, starting at addressToRead into the dest byte array
 void readRegisters(byte addressToRead, int bytesToRead, byte * dest)
 {
   Wire.beginTransmission(MMA8452_ADDRESS);
   Wire.write(addressToRead);
   Wire.endTransmission(false); //endTransmission but keep the connection active
 
-  //Ask for bytes, once done, bus is released by default
-  Wire.requestFrom(MMA8452_ADDRESS, bytesToRead);
+  Wire.requestFrom(MMA8452_ADDRESS, bytesToRead); //Ask for bytes, once done, bus is released by default
 
-  //Hang out until we get the # of bytes we expect
-  while(Wire.available() < bytesToRead);
+  while(Wire.available() < bytesToRead); //Hang out until we get the # of bytes we expect
 
   for(int x = 0 ; x < bytesToRead ; x++)
-    dest[x] = Wire.read();
+    dest[x] = Wire.read();    
 }
 
 // Read a single byte from addressToRead and return it as a byte
@@ -144,8 +141,7 @@ byte readRegister(byte addressToRead)
   Wire.write(addressToRead);
   Wire.endTransmission(false); //endTransmission but keep the connection active
 
-  //Ask for 1 byte, once done, bus is released by default
-  Wire.requestFrom(MMA8452_ADDRESS, 1);
+  Wire.requestFrom(MMA8452_ADDRESS, 1); //Ask for 1 byte, once done, bus is released by default
 
   while(!Wire.available()) ; //Wait for the data to come back
   return Wire.read(); //Return this one byte
