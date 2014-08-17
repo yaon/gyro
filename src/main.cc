@@ -4,6 +4,7 @@
 #include "Wire.h"
 
 #define MMA8452_ADDRESS 0x1D  // 0x1D if SA0 is high, 0x1C if low
+#define MD25 0x58
 
 //Define a few of the registers that we will be accessing on the MMA8452
 #define OUT_X_MSB 0x01
@@ -14,12 +15,17 @@
 // Sets full-scale range to +/-2, 4, or 8g. Used to calc real g values.
 #define GSCALE 2
 
+byte foo();
+
 void setup()
 {
-  printf("MMA8452 Basic Example");
+  printf("MMA8452 Basic Example\n");
   Wire.begin();
 
   initMMA8452(); //Test and intialize the MMA8452
+  printf("TAMERE JE LA BAISE\n");
+  printf("DEBUG BATTERY VOLT %d\n", foo());
+  while (42) {}
 }
 
 void loop()
@@ -149,6 +155,36 @@ byte readRegister(byte addressToRead)
 
   while(!Wire.available()) ; //Wait for the data to come back
   return Wire.read(); //Return this one byte
+}
+
+byte foo()
+{
+  Wire.beginTransmission(MD25);
+  // Activate mode 3 of the motors
+  Wire.write(15);
+  Wire.write(3);
+  Wire.endTransmission(); //endTransmission but keep the connection active
+
+  for (unsigned int i = 0; i < 10000; i++)
+  {
+    Wire.beginTransmission(MD25);
+    // set speed to max
+    Wire.write(0);
+    Wire.write(127);
+    Wire.endTransmission(); //endTransmission but keep the connection active
+  }
+  printf("DEBUG STOPEU\n");
+  Wire.beginTransmission(MD25);
+  // set speed to 0 before ending
+  Wire.write(0);
+  Wire.write(0);
+  Wire.endTransmission(); //endTransmission but keep the connection active
+  //Ask for 1 byte, once done, bus is released by default
+  /* Wire.requestFrom(MD25|0x1, 1); */
+
+  /* while(!Wire.available()) ; //Wait for the data to come back */
+  /* return Wire.read(); //Return this one byte */
+  return 23;
 }
 
 // Writes a single byte (dataToWrite) into addressToWrite
