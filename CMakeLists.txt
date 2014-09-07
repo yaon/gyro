@@ -111,3 +111,10 @@ add_custom_target (
   WORKING_DIRECTORY
   ${EXECUTABLE_OUTPUT_PATH}
 )
+
+add_custom_target (
+  dist
+  COMMAND
+  cd  ${EXECUTABLE_OUTPUT_PATH}/../.. && zip source.zip CMakeLists.txt configure
+  ${SOURCES} ${HEADERS}
+)

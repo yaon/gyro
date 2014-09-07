@@ -53,6 +53,9 @@ run:
 distclean:
 	rm -rf build Makefile
 
+dist:
+	make -C build dist
+
 install:
 	make -C build install
 #EOF
