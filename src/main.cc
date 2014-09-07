@@ -4,6 +4,7 @@
 #include "Wire.h"
 
 #define MMA8452_ADDRESS 0x1D  // 0x1D if SA0 is high, 0x1C if low
+#define MD25 0x58
 
 //Define a few of the registers that we will be accessing on the MMA8452
 #define OUT_X_MSB 0x01
@@ -14,12 +15,16 @@
 // Sets full-scale range to +/-2, 4, or 8g. Used to calc real g values.
 #define GSCALE 2
 
+byte foo();
+void initMD25();
+void turnMotors(int value);
+
 void setup()
 {
   printf("MMA8452 Basic Example");
   Wire.begin();
-
   initMMA8452(); //Test and intialize the MMA8452
+  initMD25();
 }
 
 void loop()
@@ -31,17 +36,19 @@ void loop()
     readAccelData(accelCount);  // Read the x/y/z adc values
 
     // Now we'll calculate the accleration value into actual g's
-    float accelG[3];  // Stores the real accel value in g's
-    for (int i = 0 ; i < 3 ; i++)
-    {
-      // get actual g value, this depends on scale being set
-      accelG[i] = (float) accelCount[i] / ((1<<12)/(2*GSCALE));
-    }
+    /* float accelG[3];  // Stores the real accel value in g's */
+    /* for (int i = 0 ; i < 3 ; i++) */
+    /* { */
+    /*   // get actual g value, this depends on scale being set */
+    /*   accelG[i] = (float) accelCount[i] / ((1<<12)/(2*GSCALE)); */
+    /* } */
+
+    turnMotors(accelCount[0]);
 
     // Print out values
     for (int i = 0 ; i < 3 ; i++)
     {
-      printf("%.4f\t", accelG[i]);
+      printf("%d\t", accelCount[i]);
     }
     printf("\n");
 
@@ -149,6 +156,35 @@ byte readRegister(byte addressToRead)
 
   while(!Wire.available()) ; //Wait for the data to come back
   return Wire.read(); //Return this one byte
+}
+
+void initMD25()
+{
+  Wire.beginTransmission(MD25);
+  // Activate mode 3 of the motors
+  Wire.write(15);
+  Wire.write(3);
+  Wire.endTransmission(); //endTransmission but keep the connection active
+}
+
+void turnMotors(int value)
+{
+  char turnValue = 0;
+
+  if (value < 200 || value > 3800)
+    value = 0;
+  else if (value > 3000)
+    value = 40;
+  else if (value < 800)
+    value = -40;
+  else
+    value = 0;
+
+  Wire.beginTransmission(MD25);
+  // set speed to max
+  Wire.write(0);
+  Wire.write(value);
+  Wire.endTransmission(); //endTransmission but keep the connection active
 }
 
 // Writes a single byte (dataToWrite) into addressToWrite

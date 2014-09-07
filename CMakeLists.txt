@@ -93,6 +93,7 @@ install (TARGETS ${BINARY_NAME} RUNTIME DESTINATION .)
 add_custom_target (
   deploy
   COMMAND
+  ssh root@${IP} 'rm -f ./gyro' &&
   scp ${BINARY_NAME} root@${IP}:
   DEPENDS
   ${BINARY_NAME}
