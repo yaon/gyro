@@ -1,0 +1,52 @@
+---
+Introduction
+---
+
+This is the project of 3 EPITA's students consisting in building a
+self-balancing gyropod from scratch.
+
+The different materials we chose to use are the following:
+  - MD25 MotorDrive
+  - 2 Intel Galileo boards:
+    - One used to send command directly to the MD25
+    - A main one to send higher level commands and allow wifi interface
+  - Wifi card
+  - Wifi cable
+  - MMA8452 accelerometer
+
+---
+How to get the image and the working environment
+---
+
+We followed that tutorial in order to build the yocto image used on the boards:
+  https://communities.intel.com/servlet/JiveServlet/previewBody/21882-102-1-25153/Quark_BSPBuildGuide_329687_001.pdf
+Using the tutorial we also built the full image onto our desktop computer to
+allow cross-compilation. Since the boards aren't very powerful, it is better to
+cross-compile and then deploy the created binary on the board.
+
+---
+How to use the project
+---
+
+The first thing to do before compiling anything is to source the configuration
+file created by the build:
+  source /opt/clanton-tiny/1.4.2/environment-setup-i586-poky-linux-uclibc
+This will initialize all the environment variables in order to allow cmake to
+automatically search the different compilation tools at the right path.
+
+The images used on the SD card are configured to have a static IP address at
+boot which is 192.168.112.112. In order to communicate using ssh with the board
+you need to have an IP set under the same subnetwork(i.e. 192.168.112.X).
+
+The configure file will create the Makefile in order to compile. All the
+generated files are place in the build folder.
+
+The different make rules are the following:
+  all       - compile the project
+  clean     - remove the generated object files
+  deploy    - compile and copy the binary onto the board at ~/gyro
+  run       - deploy and directly run the binary
+  distclean - remove every generated file, Makefile included
+  dist      - zip the files in source.zip
+
+
