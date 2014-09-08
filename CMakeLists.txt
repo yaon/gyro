@@ -18,6 +18,12 @@ set (
 
 set (
   HEADERS
+  include/main.hh
+  include/accelero.hh
+  include/motors.hh
+  include/pid.hh
+
+  # Arduino API
   include/arduino_api/WString.h
   include/arduino_api/WMath.h
   include/arduino_api/wiring_digital.h
@@ -49,11 +55,16 @@ set (
   include/arduino_api/i2c.h
   include/arduino_api/interrupt.h
   include/arduino_api/IPAddress.h
-  include/main.hh
 )
 
 set (
   SOURCES
+  src/main.cc
+  src/accelero.cc
+  src/motors.cc
+  src/pid.cc
+
+  # Arduino api
   src/arduino_api/fast_gpio_sc.c
   src/arduino_api/i2c.c
   src/arduino_api/interrupt.c
@@ -72,7 +83,6 @@ set (
   src/arduino_api/wiring_digital.c
   src/arduino_api/WMath.cc
   src/arduino_api/WString.cc
-  src/main.cc
 )
 
 add_executable (
