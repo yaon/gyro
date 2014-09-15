@@ -51,7 +51,7 @@ run:
 	make -C build run
 
 distclean:
-	rm -rf build Makefile
+	rm -rf build Makefile source.zip
 
 dist:
 	make -C build dist

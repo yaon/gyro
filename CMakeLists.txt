@@ -125,6 +125,6 @@ add_custom_target (
 add_custom_target (
   dist
   COMMAND
-  cd  ${EXECUTABLE_OUTPUT_PATH}/../.. && zip source.zip CMakeLists.txt configure
-  ${SOURCES} ${HEADERS}
+  cd ${EXECUTABLE_OUTPUT_PATH}/../.. &&
+  zip source.zip AUTHORS README CMakeLists.txt configure ${SOURCES} ${HEADERS}
 )
