@@ -14,16 +14,24 @@
 // Sets full-scale range to +/-2, 4, or 8g. Used to calc real g values.
 #define GSCALE          2
 
+// Accelero is an interface to conveniently manipulate the MMA852 accelerometer
 class Accelero
 {
   public:
     Accelero();
+    // retrieves the data of the accelerometer and returns the x-axis data
     int operator()();
   private:
+    // Read uint8_tsToRead sequentially,
+    // starting at addressToRead into the dest uint8_t array
     void readRegisters(byte addressToRead, int bytesToRead, byte * dest);
+    // Read a single uint8_t from addressToRead and return it as a uint8_t
     uint8_t readRegister(byte addressToRead);
+    // Sets the MMA8452 to standby mode. It must be in standby to change most register settings
     void MMA8452Standby();
+    // Writes a single uint8_t (dataToWrite) into addressToWrite
     void writeRegister(byte addressToWrite, byte dataToWrite);
+    // Sets the MMA8452 to active mode. Needs to be in this mode to output data
     void MMA8452Active();
 };
 

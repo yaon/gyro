@@ -61,7 +61,6 @@ int Accelero::operator()()
   return destination[0];
 }
 
-// Writes a single uint8_t (dataToWrite) into addressToWrite
 void Accelero::writeRegister(uint8_t addressToWrite, uint8_t dataToWrite)
 {
   Wire.beginTransmission(MMA8452_ADDRESS);
@@ -70,9 +69,6 @@ void Accelero::writeRegister(uint8_t addressToWrite, uint8_t dataToWrite)
   Wire.endTransmission(); //Stop transmitting
 }
 
-
-// Read uint8_tsToRead sequentially,
-// starting at addressToRead into the dest uint8_t array
 void Accelero::readRegisters(uint8_t addressToRead, int uint8_tsToRead, uint8_t * dest)
 {
   Wire.beginTransmission(MMA8452_ADDRESS);
@@ -89,7 +85,6 @@ void Accelero::readRegisters(uint8_t addressToRead, int uint8_tsToRead, uint8_t 
     dest[x] = Wire.read();
 }
 
-// Read a single uint8_t from addressToRead and return it as a uint8_t
 uint8_t Accelero::readRegister(uint8_t addressToRead)
 {
   Wire.beginTransmission(MMA8452_ADDRESS);
@@ -103,14 +98,12 @@ uint8_t Accelero::readRegister(uint8_t addressToRead)
   return Wire.read(); //Return this one uint8_t
 }
 
-// Sets the MMA8452 to standby mode. It must be in standby to change most register settings
 void Accelero::MMA8452Standby()
 {
   uint8_t c = readRegister(CTRL_REG1);
   writeRegister(CTRL_REG1, c & ~(0x01)); //Clear the active bit to go into standby
 }
 
-// Sets the MMA8452 to active mode. Needs to be in this mode to output data
 void Accelero::MMA8452Active()
 {
   uint8_t c = readRegister(CTRL_REG1);
