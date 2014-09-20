@@ -19,10 +19,9 @@ byte foo();
 
 void setup()
 {
-  printf("MMA8452 Basic Example\n");
   Wire.begin();
 
-  initMMA8452(); //Test and intialize the MMA8452
+  //initMMA8452(); //Test and intialize the MMA8452
   printf("TAMERE JE LA BAISE\n");
   printf("DEBUG BATTERY VOLT %d\n", foo());
   while (42) {}
@@ -200,8 +199,11 @@ int main( int argc, char ** argv )
 {
   printf("\n *** LED and sensor demo *** \n\n");
 
+  printf("BEFORE INTERUPT INIT\n");
   interrupt_init();
+  printf("BEFORE INIT\n");
   init(argc, argv);
+  printf("BEFORE SETUP\n");
 
   //Setting up I/O
   setup();
