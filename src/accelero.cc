@@ -1,3 +1,12 @@
+/*
+   AUTHORS
+
+   CAILLARD Jim
+   CHHIM    Ly William
+   LY TANG  Guillaume
+
+   2015
+*/
 #include "accelero.hh"
 
 // Initialize the MMA8452 registers

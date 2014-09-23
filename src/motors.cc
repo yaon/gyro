@@ -1,3 +1,12 @@
+/*
+   AUTHORS
+
+   CAILLARD Jim
+   CHHIM    Ly William
+   LY TANG  Guillaume
+
+   2015
+*/
 #include "motors.hh"
 
 Motors::Motors()

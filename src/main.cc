@@ -1,3 +1,12 @@
+/*
+   AUTHORS
+
+   CAILLARD Jim
+   CHHIM    Ly William
+   LY TANG  Guillaume
+
+   2015
+*/
 #include "main.hh"
 
 int main( int argc, char ** argv )
