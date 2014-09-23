@@ -16,14 +16,9 @@ set (
   gyro
 )
 
+# Arduino API
 set (
-  HEADERS
-  include/main.hh
-  include/accelero.hh
-  include/motors.hh
-  include/pid.hh
-
-  # Arduino API
+  ARDUINO_HEADERS
   include/arduino_api/WString.h
   include/arduino_api/WMath.h
   include/arduino_api/wiring_digital.h
@@ -58,13 +53,7 @@ set (
 )
 
 set (
-  SOURCES
-  src/main.cc
-  src/accelero.cc
-  src/motors.cc
-  src/pid.cc
-
-  # Arduino api
+  ARDUINO_SOURCES
   src/arduino_api/fast_gpio_sc.c
   src/arduino_api/i2c.c
   src/arduino_api/interrupt.c
@@ -85,8 +74,27 @@ set (
   src/arduino_api/WString.cc
 )
 
+set (
+  HEADERS
+  include/main.hh
+  include/accelero.hh
+  include/motors.hh
+  include/pid.hh
+)
+
+set (
+  SOURCES
+  src/main.cc
+  src/accelero.cc
+  src/motors.cc
+  src/pid.cc
+
+)
+
 add_executable (
   ${BINARY_NAME}
+  ${ARDUINO_SOURCES}
+  ${ARDUINO_HEADERS}
   ${SOURCES}
   ${HEADERS}
 )
@@ -122,6 +130,7 @@ add_custom_target (
   ${EXECUTABLE_OUTPUT_PATH}
 )
 
+# zip the source onto source.zip
 add_custom_target (
   dist
   COMMAND
