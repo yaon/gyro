@@ -49,4 +49,13 @@ The different make rules are the following:
   distclean - remove every generated file, Makefile included
   dist      - zip the files in source.zip
 
+---
+Setup wifi on the intell gallileo
+---
 
+First, you need to install the firmware for the Mini PCI-E Wifi card by copying
+it to /lib/firmware/, these files are contrianes in the firmware-iwlwifi debian
+package.
+
+Then, to set up a hostspot network:
+  iwconfig wlan0 mode ad-hoc essid name
