@@ -6,6 +6,8 @@
    LY TANG  Guillaume
 
    2015
+
+   Accelerometer that is an interface to read and write data to the accelerometer
 */
 #include "accelero.hh"
 

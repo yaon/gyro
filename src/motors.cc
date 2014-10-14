@@ -6,6 +6,8 @@
    LY TANG  Guillaume
 
    2015
+
+   Motor is an interface to send values to the MD25 motor drive system
 */
 #include "motors.hh"
 

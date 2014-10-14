@@ -6,6 +6,8 @@
    LY TANG  Guillaume
 
    2015
+
+   Header of Accelerometer
 */
 #pragma once
 

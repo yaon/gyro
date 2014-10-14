@@ -6,6 +6,8 @@
    LY TANG  Guillaume
 
    2015
+
+   PID is the asserving algorithm used to set the speed of the motors
 */
 #include "pid.hh"
 #include <iostream>

@@ -6,6 +6,8 @@
    LY TANG  Guillaume
 
    2015
+
+   Main file that launch the asserving program
 */
 #include "main.hh"
 
