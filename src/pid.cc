@@ -13,7 +13,7 @@
 #include <iostream>
 
 PID::PID()
-  : kp(1), ki(1), kd(1), last_error(0), error_sum(0)
+  : kp(1), ki(1), kd(1), error_sum(0), last_error(0)
 {}
 
 int PID::operator()(int value)
