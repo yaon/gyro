@@ -19,6 +19,7 @@ set (
 # Arduino API
 set (
   ARDUINO_HEADERS
+  include/arduino_api/PID_v1.h
   include/arduino_api/WString.h
   include/arduino_api/WMath.h
   include/arduino_api/wiring_digital.h
@@ -54,6 +55,7 @@ set (
 
 set (
   ARDUINO_SOURCES
+  src/arduino_api/PID_v1.cpp
   src/arduino_api/fast_gpio_sc.c
   src/arduino_api/i2c.c
   src/arduino_api/interrupt.c
@@ -79,7 +81,6 @@ set (
   include/main.hh
   include/accelero.hh
   include/motors.hh
-  include/pid.hh
 )
 
 set (
@@ -87,8 +88,6 @@ set (
   src/main.cc
   src/accelero.cc
   src/motors.cc
-  src/pid.cc
-
 )
 
 add_executable (
