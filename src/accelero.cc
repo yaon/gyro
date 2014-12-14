@@ -68,8 +68,8 @@ int Accelero::operator()()
     destination[i] = gCount; //Record this gCount into the 3 int array
   }
 
-  // Return only X axis
-  return destination[0];
+  // Return only Y axis
+  return destination[1];
 }
 
 void Accelero::writeRegister(uint8_t addressToWrite, uint8_t dataToWrite)
