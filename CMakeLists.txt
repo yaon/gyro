@@ -15,6 +15,14 @@ set (
   BINARY_NAME
   gyro
 )
+set (
+  TEST_ACCELERO
+  test_accelero
+)
+set (
+  TEST_MOTORS
+  test_motors
+)
 
 # Arduino API
 set (
@@ -97,9 +105,34 @@ add_executable (
   ${SOURCES}
   ${HEADERS}
 )
-
 target_link_libraries (
   ${BINARY_NAME}
+  pthread
+)
+
+add_executable (
+  ${TEST_ACCELERO}
+  ${ARDUINO_SOURCES}
+  ${ARDUINO_HEADERS}
+  test/test_accelero.cc
+  include/accelero.hh
+  src/accelero.cc
+)
+target_link_libraries (
+  ${TEST_ACCELERO}
+  pthread
+)
+
+add_executable (
+  ${TEST_MOTORS}
+  ${ARDUINO_SOURCES}
+  ${ARDUINO_HEADERS}
+  test/test_motors.cc
+  include/motors.hh
+  src/motors.cc
+)
+target_link_libraries (
+  ${TEST_MOTORS}
   pthread
 )
 
@@ -111,7 +144,9 @@ add_custom_target (
   deploy
   COMMAND
   ssh root@${IP} 'rm -f ./gyro' &&
-  scp ${BINARY_NAME} root@${IP}:
+  scp ${BINARY_NAME} root@${IP}: &&
+  scp ${TEST_ACCELERO} root@${IP}: &&
+  scp ${TEST_MOTORS} root@${IP}:
   DEPENDS
   ${BINARY_NAME}
   WORKING_DIRECTORY
@@ -134,5 +169,5 @@ add_custom_target (
   dist
   COMMAND
   cd ${EXECUTABLE_OUTPUT_PATH}/../.. &&
-  zip source.zip AUTHORS README CMakeLists.txt configure ${SOURCES} ${HEADERS}
+  zip source.zip AUTHORS README CMakeLists.txt configure ${SOURCES} ${HEADERS} test/test_accelero.cc test/test_motors.cc
 )

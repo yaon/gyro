@@ -44,7 +44,8 @@ generated files are place in the build folder.
 The different make rules are the following:
   all       - compile the project
   clean     - remove the generated object files
-  deploy    - compile and copy the binary onto the board at ~/gyro
+  deploy    - compile and copy the main binary and the test binaries onto the
+              board at ~/gyro
   run       - deploy and directly run the binary
   distclean - remove every generated file, Makefile included
   dist      - zip the files in source.zip
