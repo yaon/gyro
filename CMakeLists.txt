@@ -3,7 +3,10 @@ project (Gyro)
 
 set (CMAKE_VERBOSE_MAKEFILE ON)
 set (EXECUTABLE_OUTPUT_PATH bin)
-set (IP "192.168.112.112")
+#Ethernet IP
+set (IPE "192.168.112.112")
+#Wi-fi IP
+set (IPW "192.168.112.113")
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -std=c++11")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -std=c++11")
@@ -143,12 +146,14 @@ install (TARGETS ${BINARY_NAME} RUNTIME DESTINATION .)
 add_custom_target (
   deploy
   COMMAND
-  ssh root@${IP} 'rm -f ./gyro' &&
-  scp ${BINARY_NAME} root@${IP}: &&
-  scp ${TEST_ACCELERO} root@${IP}: &&
-  scp ${TEST_MOTORS} root@${IP}:
+  ssh root@${IPW} \"ssh root@${IPE} \\\"rm -f ${BINARY_NAME}\\\"\" &&
+  scp ${BINARY_NAME} root@${IPW}:/tmp/ && ssh root@${IPW} \"scp /tmp/${BINARY_NAME} root@${IPE}:\" &&
+  scp ${TEST_ACCELERO} root@${IPW}:/tmp/ && ssh root@${IPW} \"scp /tmp/${TEST_ACCELERO} root@${IPE}:\" &&
+  scp ${TEST_MOTORS} root@${IPW}:/tmp/ && ssh root@${IPW} \"scp /tmp/${TEST_MOTORS} root@${IPE}:\"
   DEPENDS
   ${BINARY_NAME}
+  ${TEST_ACCELERO}
+  ${TEST_MOTORS}
   WORKING_DIRECTORY
   ${EXECUTABLE_OUTPUT_PATH}
 )
