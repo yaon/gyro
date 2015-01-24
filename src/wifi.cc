@@ -208,16 +208,16 @@ int main()
       case 'k': // Kill asserv program
         if (pid = fork() == 0)
         {
-          char *cmd[] = {"\"killall gyro && ./gyro\""};
-          execv("ssh", cmd);
+          char *cmd[] = {"/bin/sh", "ssh.sh", "killall gyro", NULL};
+          execv("/bin/sh", cmd);
           return 0;
         }
         break;
       case 'm': // Launch asserv program
         if (pid = fork() == 0)
         {
-          char *cmd[] = {"\"killall gyro\""};
-          execv("ssh", cmd);
+          char *cmd[] = {"/bin/sh", "ssh.sh", "killall gyro ; ./gyro", NULL};
+          execv("/bin/sh", cmd);
           return 0;
         }
         break;
