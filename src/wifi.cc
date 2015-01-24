@@ -183,27 +183,45 @@ int main()
 
     switch (char c = str[1])
     {
+      pid_t pid;
       fprintf(stderr, "%c\n", c);
       case 'u': // Forward
-      writeGPIO(fileHandleGPIO_5, 1);
-      writeGPIO(fileHandleGPIO_6, 1);
-      writeGPIO(fileHandleGPIO_7, 1);
-      break;
+        writeGPIO(fileHandleGPIO_5, 1);
+        writeGPIO(fileHandleGPIO_6, 1);
+        writeGPIO(fileHandleGPIO_7, 1);
+        break;
       case 'd': // Backwards
-      writeGPIO(fileHandleGPIO_5, 1);
-      writeGPIO(fileHandleGPIO_6, 0);
-      writeGPIO(fileHandleGPIO_7, 1);
-      break;
+        writeGPIO(fileHandleGPIO_5, 1);
+        writeGPIO(fileHandleGPIO_6, 0);
+        writeGPIO(fileHandleGPIO_7, 1);
+        break;
       case 'r': // Turn right
-      writeGPIO(fileHandleGPIO_5, 1);
-      writeGPIO(fileHandleGPIO_6, 1);
-      writeGPIO(fileHandleGPIO_7, 0);
-      break;
+        writeGPIO(fileHandleGPIO_5, 1);
+        writeGPIO(fileHandleGPIO_6, 1);
+        writeGPIO(fileHandleGPIO_7, 0);
+        break;
       case 'l': // Turn left
-      writeGPIO(fileHandleGPIO_5, 0);
-      writeGPIO(fileHandleGPIO_6, 1);
-      writeGPIO(fileHandleGPIO_7, 1);
-      break;
+        writeGPIO(fileHandleGPIO_5, 0);
+        writeGPIO(fileHandleGPIO_6, 1);
+        writeGPIO(fileHandleGPIO_7, 1);
+        break;
+      case 'k': // Kill asserv program
+        if (pid = fork() == 0)
+        {
+          char *cmd[] = {"\"killall gyro && ./gyro\""};
+          execv("ssh", cmd);
+          return 0;
+        }
+        break;
+      case 'm': // Launch asserv program
+        if (pid = fork() == 0)
+        {
+          char *cmd[] = {"\"killall gyro\""};
+          execv("ssh", cmd);
+          return 0;
+        }
+        break;
+        break;
     }
     usleep(300);
 
