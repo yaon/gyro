@@ -13,7 +13,7 @@
 #include "PID_v1.h"
 #include <iostream>
 
-#define INIT_SETPOINT 60.f
+#define INIT_SETPOINT 0.f
 
 /**
   These are the pins used to communicate with the other board in order to
@@ -128,9 +128,9 @@ int main(int argc, char ** argv)
   /* double kd = kp * pu / 8.f; */
 
   // Empiric terms we found manually
-  double kp = 0.075f;
-  double ki = 0.25f;
-  double kd = 0.0001f;
+  double kp = 0.05f;//075f;
+  double ki = 0.25f;//25f;
+  double kd = 0.00005f;//0001f;
 
   PID pid(&input, &output, &setPoint, kp, ki, kd, DIRECT);
   pid.SetOutputLimits(-128, 127);

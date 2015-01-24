@@ -13,9 +13,22 @@
 
 Motors::Motors()
 {
+  // set to mode 3 (see documentation)
   Wire.beginTransmission(MD25);
   Wire.write(15);
   Wire.write(3);
+  Wire.endTransmission();
+
+  // set speed to 0
+  Wire.beginTransmission(MD25);
+  Wire.write(0);
+  Wire.write(0);
+  Wire.endTransmission();
+
+  // set turn to 0
+  Wire.beginTransmission(MD25);
+  Wire.write(1);
+  Wire.write(0);
   Wire.endTransmission();
 }
 
