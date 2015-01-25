@@ -29,7 +29,8 @@ static const int pin1 = 5;
 static const int pin2 = 6;
 static const int pin3 = 7;
 
-static void read_gpio(double& setPoint)
+// Read the GPIO and execute the command
+static void read_gpio(double& setPoint, Motors& motors)
 {
   static bool connected = false;
   // The board is considered as connected when the other board will have
@@ -74,13 +75,16 @@ static void read_gpio(double& setPoint)
     else if (val1 == 1 && val2 == 1 && val3 == 0)
     {
       std::cerr << "LEFT COMMAND RECEIVED" << std::endl;
+      motors.turn(1);
     }
     else if (val1 == 0 && val2 == 1 && val3 == 1)
     {
       std::cerr << "RIGHT COMMAND RECEIVED" << std::endl;
+      motors.turn(-1);
     }
     else
     {
+      motors.turn(0);
       setPoint = INIT_SETPOINT;
       return;
     }
@@ -128,9 +132,9 @@ int main(int argc, char ** argv)
   /* double kd = kp * pu / 8.f; */
 
   // Empiric terms we found manually
-  double kp = 0.05f;//075f;
-  double ki = 0.25f;//25f;
-  double kd = 0.00005f;//0001f;
+  double kp = 0.1f;//075f;
+  double ki = 0.001f;//25f;
+  double kd = 0.f;//0001f;
 
   PID pid(&input, &output, &setPoint, kp, ki, kd, DIRECT);
   pid.SetOutputLimits(-128, 127);
@@ -146,7 +150,7 @@ int main(int argc, char ** argv)
     // and between 4096 - 1024 and 4096 if it is tilted backward
     input = input < 1024 ? - input : 4096 - input;
 
-    read_gpio(setPoint);
+    read_gpio(setPoint, motor);
 
     pid.Compute();
 

@@ -20,22 +20,24 @@ Motors::Motors()
   Wire.endTransmission();
 
   // set speed to 0
-  Wire.beginTransmission(MD25);
-  Wire.write(0);
-  Wire.write(0);
-  Wire.endTransmission();
+  (*this)(0);
 
   // set turn to 0
-  Wire.beginTransmission(MD25);
-  Wire.write(1);
-  Wire.write(0);
-  Wire.endTransmission();
+  turn(0);
 }
 
 void Motors::operator()(int value)
 {
   Wire.beginTransmission(MD25);
   Wire.write(0);
+  Wire.write(value);
+  Wire.endTransmission();
+}
+
+void Motors::turn(int value)
+{
+  Wire.beginTransmission(MD25);
+  Wire.write(1);
   Wire.write(value);
   Wire.endTransmission();
 }

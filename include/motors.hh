@@ -23,5 +23,8 @@ class Motors
     Motors();
     // makes the motors move at the value given (between -128 and 127)
     void operator()(int value);
+
+    // make the motors turn at the given value (between -128 and 127)
+    void turn(int value);
   private:
 };
